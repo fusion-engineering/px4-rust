@@ -8,5 +8,10 @@ edition = "2018"
 name = "px4"
 path = "src/lib.rs"
 
+[[example]]
+name = "demo"
+crate-type = ["cdylib"]
+path = "example/main.rs"
+
 [dependencies]
 log = "*"
