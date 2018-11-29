@@ -5,16 +5,18 @@ use log::{warn, info};
 use px4::{info_raw, px4_module};
 
 pub fn main(args: &[&str]) -> i32 {
-	warn!("Hello World!");
+	info!("Hello World!");
 
 	info_raw!("\n |> \\/ /_|    |> | | /_ |_");
 	info_raw!("\n |  /\\   |    |\\ |_|  / |_\n\n");
 
 	info!("Arguments: {:?}", &args[1..]);
 
-	if args.len() > 1 && args[1] == "panic" {
+	if args.get(1) == Some(&"panic") {
 		panic!("A disaster happened!");
 	}
+
+	warn!("The end is near!");
 
 	0
 }
