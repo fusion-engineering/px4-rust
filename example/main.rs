@@ -2,8 +2,9 @@ extern crate log;
 extern crate px4;
 
 use log::{warn, info};
-use px4::{info_raw, px4_module};
+use px4::{info_raw, px4_module_main};
 
+#[px4_module_main]
 pub fn main(args: &[&str]) -> i32 {
 	info!("Hello World!");
 
@@ -20,5 +21,3 @@ pub fn main(args: &[&str]) -> i32 {
 
 	0
 }
-
-px4_module!(main);

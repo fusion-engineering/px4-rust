@@ -14,3 +14,4 @@ path = "example/main.rs"
 
 [dependencies]
 log = "*"
+px4_macros = { path = "macros" }
