@@ -19,4 +19,4 @@ path = "example/main.rs"
 
 [dependencies]
 log = "*"
-px4_macros = { path = "macros" }
+px4_macros = { version = "0.1.0", path = "macros" }
