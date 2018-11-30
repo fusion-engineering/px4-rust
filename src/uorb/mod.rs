@@ -1,3 +1,7 @@
+//! Bindings to the uORB messaging system.
+//!
+//! This part is not yet finished.
+
 mod c;
 mod publish;
 mod subscribe;

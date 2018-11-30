@@ -6,6 +6,7 @@ extern "C" {
 	fn px4_log_raw(level: i32, fmt: *const u8, ...);
 }
 
+#[doc(hidden)]
 pub enum LogLevel {
 	Debug = 0,
 	Info = 1,
@@ -14,6 +15,7 @@ pub enum LogLevel {
 	Panic = 4,
 }
 
+#[doc(hidden)]
 pub fn log_raw(level: LogLevel, message: &str) {
 	unsafe {
 		px4_log_raw(
@@ -25,6 +27,19 @@ pub fn log_raw(level: LogLevel, message: &str) {
 	}
 }
 
+/// Print output without any decoration.
+///
+/// The equivalent of `PX4_INFO_RAW` in C and C++.
+///
+/// ## Example
+///
+/// ```
+/// # #[macro_use] extern crate px4;
+/// # #[no_mangle] fn px4_log_raw() {}
+/// # fn main() {
+/// info_raw!("Hello {}!\n", "World");
+/// # }
+/// ```
 #[macro_export]
 macro_rules! info_raw {
 	($($arg:tt)+) => (
