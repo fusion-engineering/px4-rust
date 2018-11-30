@@ -57,19 +57,3 @@ impl Metadata {
 		unsafe { std::str::from_utf8_unchecked(self.fields_cstr().to_bytes()) }
 	}
 }
-
-#[macro_export]
-macro_rules! ORB_ID {
-	($name:ident) => {
-		ORB_ID!(@ concat!("__orb_", stringify!($name)))
-	};
-	(@ $name:expr) => {
-		unsafe {
-			extern "C" {
-				#[link_name=$name]
-				static metadata: px4::uorb::Metadata;
-			}
-			&metadata
-		}
-	};
-}
