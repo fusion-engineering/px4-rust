@@ -25,35 +25,38 @@ extern "C" {
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct Metadata {
-	#[doc(hidden)]
-	pub _name: *const u8,
-	#[doc(hidden)]
-	pub _size: u16,
-	#[doc(hidden)]
-	pub _size_no_padding: u16,
-	#[doc(hidden)]
-	pub _fields: *const u8,
+	name: *const u8,
+	size: u16,
+	size_no_padding: u16,
+	fields: *const u8,
 }
 
 unsafe impl Sync for Metadata {}
 
 impl Metadata {
-	pub fn name_cstr(&self) -> &CStr {
-		unsafe { CStr::from_ptr(self._name as *const _) }
+	// This is used by the #[px4_message] proc_macro.
+	#[doc(hidden)]
+	pub const fn _unsafe_new(name: *const u8, size: u16, size_no_padding: u16, fields: *const u8) -> Metadata {
+		Metadata { name, size, size_no_padding, fields }
 	}
 	pub fn name(&self) -> &str {
 		unsafe { std::str::from_utf8_unchecked(self.name_cstr().to_bytes()) }
 	}
+
+	pub fn name_cstr(&self) -> &CStr {
+		unsafe { CStr::from_ptr(self.name as *const _) }
+	}
+
 	pub fn size(&self) -> u16 {
-		self._size
+		self.size
 	}
 	pub fn size_no_padding(&self) -> u16 {
-		self._size_no_padding
-	}
-	pub fn fields_cstr(&self) -> &CStr {
-		unsafe { CStr::from_ptr(self._fields as *const _) }
+		self.size_no_padding
 	}
 	pub fn fields(&self) -> &str {
 		unsafe { std::str::from_utf8_unchecked(self.fields_cstr().to_bytes()) }
+	}
+	pub fn fields_cstr(&self) -> &CStr {
+		unsafe { CStr::from_ptr(self.fields as *const _) }
 	}
 }
