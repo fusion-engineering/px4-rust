@@ -1,7 +1,12 @@
 [package]
 name = "px4_macros"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["Mara Bos <m-ou.se@m-ou.se>"]
+description = "Procedural macros used by the px4 crate"
+license = "BSD-2-Clause"
+repository = "https://github.com/dronesforwork/px4-rust"
+documentation = "https://docs.rs/px4/"
+keywords = ["px4"]
 
 [lib]
 proc_macro = true

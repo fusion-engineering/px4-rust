@@ -2,6 +2,11 @@
 name = "px4"
 version = "0.1.0"
 authors = ["Mara Bos <m-ou.se@m-ou.se>"]
+description = "Rust bindings for PX4"
+license = "BSD-2-Clause"
+repository = "https://github.com/dronesforwork/px4-rust"
+documentation = "https://docs.rs/px4/"
+keywords = ["px4"]
 
 [lib]
 name = "px4"
