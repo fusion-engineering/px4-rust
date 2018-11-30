@@ -1,12 +1,7 @@
-extern crate proc_macro;
-extern crate quote;
-extern crate syn;
-
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::parse_macro_input;
 
-#[proc_macro_attribute]
 pub fn px4_module_main(args: TokenStream, input: TokenStream) -> TokenStream {
 	if args.to_string() != "" {
 		panic!("px4_module_main does not take any arguments");

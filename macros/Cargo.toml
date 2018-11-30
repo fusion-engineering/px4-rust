@@ -5,8 +5,8 @@ authors = ["Mara Bos <m-ou.se@m-ou.se>"]
 
 [lib]
 proc_macro = true
-path = "macros.rs"
 
 [dependencies]
+proc-macro2 = "0.4"
 quote = "0.6"
 syn = { version = "0.15", features = ["full"] }

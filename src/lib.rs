@@ -96,7 +96,7 @@ pub mod uorb;
 mod logging;
 
 pub use crate::logging::{log_raw, LogLevel};
-pub use px4_macros::px4_module_main;
+pub use px4_macros::{px4_message, px4_module_main};
 
 #[doc(hidden)]
 pub fn _run<F>(modulename: &'static [u8], argc: u32, argv: *mut *mut u8, f: F) -> i32
