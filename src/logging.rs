@@ -25,6 +25,13 @@ pub fn log_raw(level: LogLevel, message: &str) {
 	}
 }
 
+#[macro_export]
+macro_rules! info_raw {
+	($($arg:tt)+) => (
+		$crate::log_raw($crate::LogLevel::Info, &format!($($arg)+))
+	)
+}
+
 struct Px4Logger;
 
 impl log::Log for Px4Logger {

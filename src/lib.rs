@@ -10,13 +10,6 @@ mod logging;
 pub use crate::logging::{log_raw, LogLevel};
 pub use px4_macros::px4_module_main;
 
-#[macro_export]
-macro_rules! info_raw {
-	($($arg:tt)+) => (
-		$crate::log_raw($crate::LogLevel::Info, &format!($($arg)+))
-	)
-}
-
 #[doc(hidden)]
 pub fn _run<F>(modulename: &'static [u8], argc: u32, argv: *mut *mut u8, f: F) -> i32
 where
