@@ -4,6 +4,7 @@ extern crate px4_macros;
 use std::ffi::CStr;
 use std::os::raw::c_char;
 
+pub mod uorb;
 mod logging;
 
 pub use crate::logging::{log_raw, LogLevel};
