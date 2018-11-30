@@ -62,31 +62,32 @@ impl log::Log for Px4Logger {
 static LOGGER: Px4Logger = Px4Logger;
 
 pub unsafe fn init(modulename: &'static [u8]) {
-	log::set_logger(&LOGGER).ok();
-	log::set_max_level(log::LevelFilter::Info);
-	std::panic::set_hook(Box::new(move |info: &std::panic::PanicInfo| {
-		let payload: &str = if let Some(s) = info.payload().downcast_ref::<&'static str>() {
-			s
-		} else if let Some(s) = info.payload().downcast_ref::<String>() {
-			&s
-		} else {
-			"[panic message not available]"
-		};
-		let mut message = String::new();
-		let thread = std::thread::current();
-		if let Some(name) = thread.name() {
-			write!(message, "thread '{}' ", name).unwrap();
-		}
-		write!(message, "panicked at '{}'", payload).unwrap();
-		if let Some(loc) = info.location() {
-			write!(message, ", {}", loc).unwrap();
-		}
-		message.push('\0');
-		px4_log_modulename(
-			LogLevel::Panic as i32,
-			modulename.as_ptr(),
-			"%s\0".as_ptr(),
-			message.as_ptr(),
-		);
-	}));
+	if log::set_logger(&LOGGER).is_ok() {
+		log::set_max_level(log::LevelFilter::Info);
+		std::panic::set_hook(Box::new(move |info: &std::panic::PanicInfo| {
+			let payload: &str = if let Some(s) = info.payload().downcast_ref::<&'static str>() {
+				s
+			} else if let Some(s) = info.payload().downcast_ref::<String>() {
+				&s
+			} else {
+				"[panic message not available]"
+			};
+			let mut message = String::new();
+			let thread = std::thread::current();
+			if let Some(name) = thread.name() {
+				write!(message, "thread '{}' ", name).unwrap();
+			}
+			write!(message, "panicked at '{}'", payload).unwrap();
+			if let Some(loc) = info.location() {
+				write!(message, ", {}", loc).unwrap();
+			}
+			message.push('\0');
+			px4_log_modulename(
+				LogLevel::Panic as i32,
+				modulename.as_ptr(),
+				"%s\0".as_ptr(),
+				message.as_ptr(),
+			);
+		}));
+	}
 }
