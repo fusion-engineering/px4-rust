@@ -155,6 +155,7 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 
 	let expanded = quote! {
 		#[repr(C)]
+		#[repr(align(8))]
 		#[derive(Clone,Debug)]
 		#(#attrs)*
 		#vis struct #name {
