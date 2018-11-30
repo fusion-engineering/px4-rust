@@ -22,6 +22,12 @@ extern "C" {
 	pub fn orb_get_interval(handle: i32, interval: *mut u32) -> i32;
 }
 
+/// The meta data of a message.
+///
+/// Equivalent to `struct orb_metadata` in C and C++.
+///
+/// You can obtain a message's metadata through
+/// [`Message::metadata()`](trait.Message.html#method.metadata).
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct Metadata {
@@ -39,23 +45,37 @@ impl Metadata {
 	pub const fn _unsafe_new(name: *const u8, size: u16, size_no_padding: u16, fields: *const u8) -> Metadata {
 		Metadata { name, size, size_no_padding, fields }
 	}
+
+	/// The name of the message.
 	pub fn name(&self) -> &str {
 		unsafe { std::str::from_utf8_unchecked(self.name_cstr().to_bytes()) }
 	}
 
+	/// Same as `name`, but as zero-terminated C string.
 	pub fn name_cstr(&self) -> &CStr {
 		unsafe { CStr::from_ptr(self.name as *const _) }
 	}
 
+	/// The size of the message in bytes.
 	pub fn size(&self) -> u16 {
 		self.size
 	}
+
+	/// The size of the message in bytes, without any padding at the end.
 	pub fn size_no_padding(&self) -> u16 {
 		self.size_no_padding
 	}
+
+	/// A description of all fields and padding in the message.
+	///
+	/// See `message_format_s` in the
+	/// [ulog file format](https://dev.px4.io/en/log/ulog_file_format.html)
+	/// for a specification of this string.
 	pub fn fields(&self) -> &str {
 		unsafe { std::str::from_utf8_unchecked(self.fields_cstr().to_bytes()) }
 	}
+
+	/// Same as `fields`, but as zero-terminated C string.
 	pub fn fields_cstr(&self) -> &CStr {
 		unsafe { CStr::from_ptr(self.fields as *const _) }
 	}

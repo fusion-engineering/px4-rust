@@ -50,6 +50,11 @@ pub use self::c::Metadata;
 pub use self::publish::{Publisher, Publish};
 pub use self::subscribe::{Subscription, Subscribe};
 
+/// A message which can be published and/or subscribed to.
+///
+/// This trait is automatically implemented for all messages imported using
+/// `#[px4_message]`.
 pub unsafe trait Message {
+	/// Get the metadata of this type of message.
 	fn metadata() -> &'static Metadata;
 }
