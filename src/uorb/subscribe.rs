@@ -66,6 +66,7 @@ impl<T: Message> Subscription<T> {
 		}
 	}
 	pub fn copy(&self, val: &mut T) -> Result<(), i32> {
+		assert_eq!(std::mem::size_of::<T>(), T::metadata().size() as usize);
 		unsafe {
 			let r = c::orb_copy(T::metadata(), self.handle, val as *mut T as *mut u8);
 			if r == 0 {
