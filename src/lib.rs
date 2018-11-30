@@ -80,11 +80,32 @@
 //! }
 //! ```
 //!
-//! ### uORB
+//! ## uORB
 //!
-//! See the [`uorb` module](uorb/index.html) for documentation on how to use
-//! the uORB bindings.
+//! Message definitions can be imported from `.msg` files, and then subscribed
+//! to or published. See the [`uorb` module](uorb/index.html) for documentation
+//! on how to use the uORB bindings.
 //!
+//! ### Example
+//!
+//! ```
+//! extern crate log;
+//! extern crate px4;
+//!
+//! use log::info;
+//! use px4::{px4_module_main, px4_message};
+//! use px4::uorb::Subscribe;
+//!
+//! #[px4_message("example/msg/debug_value.msg")]
+//! pub struct debug_value;
+//!
+//! #[px4_module_main]
+//! fn my_module(args: &[&str]) -> i32 {
+//!   let sub = debug_value::subscribe().unwrap();
+//!   info!("Latest debug message: {:?}", sub.get().unwrap());
+//!   0
+//! }
+//! ```
 
 extern crate log;
 extern crate px4_macros;
