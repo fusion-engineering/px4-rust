@@ -1,7 +1,7 @@
 extern crate log;
 extern crate px4;
 
-use log::info;
+use log::{info, warn};
 use px4::{info_raw, px4_message, px4_module_main};
 
 use px4::uorb::{Publish, Subscribe};
@@ -11,12 +11,17 @@ pub struct debug_value;
 
 #[px4_module_main]
 fn main(args: &[&str]) -> i32 {
+
+	// Logging:
+
 	info!("Hello World!");
 
 	info_raw!("\n |> \\/ /_|    |> | | /_ |_");
 	info_raw!("\n |  /\\   |    |\\ |_|  / |_\n\n");
 
-	info!("Arguments: {:?}", &args[1..]);
+	warn!("Arguments: {:?}", &args[1..]);
+
+	// Publishing:
 
 	info!("Publishing data...");
 
@@ -38,10 +43,13 @@ fn main(args: &[&str]) -> i32 {
 		ind: 37,
 	}).unwrap();
 
+	// Subscribing:
+
 	info!("debug_value exists: {}", debug_value::exists(0));
 	info!("debug_value group_count: {}", debug_value::group_count());
 
 	let sub = debug_value::subscribe().unwrap();
+
 	info!("Subscribed and read: {:?}", sub.get());
 
 	0
