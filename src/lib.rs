@@ -33,8 +33,8 @@
 //! needed to set up the environment and export the function under the right
 //! name is then inserted automatically.
 //!
-//! Your main function should take a `&[&str]` as argument, and return a `i32`
-//! status code. A panic from your main thread is caught and results in a
+//! Your main function should take a `&[&str]` as argument, and *may* return a
+//! `i32` status code. A panic from your main thread is caught and results in a
 //! status code of −1.
 //!
 //! ### Example
@@ -73,7 +73,7 @@
 //! use px4::px4_module_main;
 //!
 //! #[px4_module_main]
-//! fn my_module(args: &[&str]) -> i32 {
+//! fn my_module(args: &[&str]) {
 //!   info!("Hello World!");
 //!   warn!("A warning!");
 //!   panic!("Bye!");
@@ -100,7 +100,7 @@
 //! pub struct debug_value;
 //!
 //! #[px4_module_main]
-//! fn my_module(args: &[&str]) -> i32 {
+//! fn my_module(args: &[&str]) {
 //!
 //!   let mut publ = debug_value::advertise();
 //!   publ.publish(&debug_value { timestamp: 0, value: 1.0, ind: 3 }).unwrap();

@@ -10,7 +10,7 @@ use px4::uorb::{Publish, Subscribe};
 pub struct debug_value;
 
 #[px4_module_main]
-fn main(args: &[&str]) -> i32 {
+fn main(args: &[&str]) {
 
 	// Logging:
 
@@ -51,6 +51,4 @@ fn main(args: &[&str]) -> i32 {
 	let sub = debug_value::subscribe().unwrap();
 
 	info!("Subscribed and read: {:?}", sub.get());
-
-	0
 }
