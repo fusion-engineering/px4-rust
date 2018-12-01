@@ -107,8 +107,6 @@
 //!
 //!   let sub = debug_value::subscribe().unwrap();
 //!   info!("Latest debug message: {:?}", sub.get().unwrap());
-//!
-//!   0
 //! }
 //! ```
 
