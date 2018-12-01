@@ -1,6 +1,6 @@
 [package]
 name = "px4_macros"
-version = "0.1.0"
+version = "0.2.1"
 authors = ["Mara Bos <m-ou.se@m-ou.se>"]
 description = "Procedural macros used by the px4 crate"
 license = "BSD-2-Clause"

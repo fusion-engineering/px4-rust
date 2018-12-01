@@ -1,6 +1,6 @@
 [package]
 name = "px4"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Mara Bos <m-ou.se@m-ou.se>"]
 description = "Rust bindings for PX4"
 license = "BSD-2-Clause"
@@ -19,4 +19,4 @@ path = "example/main.rs"
 
 [dependencies]
 log = "0.4"
-px4_macros = { version = "0.1.0", path = "macros" }
+px4_macros = { version = "0.2.1", path = "macros" }
