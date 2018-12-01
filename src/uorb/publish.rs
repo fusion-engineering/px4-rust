@@ -138,6 +138,8 @@ impl<T> Drop for Publisher<T> {
 
 /// Use one of the functions below to create a [`Publisher`](struct.Publisher.html).
 ///
+/// They are automatically implemented on all [`Message`](trait.Message.html)s.
+///
 /// The functions are lazy: The messages aren't advertised directly, but only
 /// on the first call to [`publish`](struct.Publisher.html#method.publish).
 pub trait Publish {
