@@ -20,15 +20,23 @@ fn main(args: &[&str]) -> i32 {
 
 	info!("Publishing data...");
 
-	let mut d = debug_value {
+	let mut p = debug_value::advertise();
+
+	assert_eq!(p.is_advertised(), false);
+
+	p.publish(&debug_value {
 		timestamp: 123,
 		value: 1.0f32,
 		ind: 13,
-	};
-	let p = d.advertise().unwrap();
+	}).unwrap();
 
-	d.timestamp = 456;
-	p.publish(&d).unwrap();
+	assert_eq!(p.is_advertised(), true);
+
+	p.publish(&debug_value {
+		timestamp: 456,
+		value: 2.0f32,
+		ind: 37,
+	}).unwrap();
 
 	info!("debug_value exists: {}", debug_value::exists(0));
 	info!("debug_value group_count: {}", debug_value::group_count());

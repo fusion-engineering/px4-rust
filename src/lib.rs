@@ -94,15 +94,20 @@
 //!
 //! use log::info;
 //! use px4::{px4_module_main, px4_message};
-//! use px4::uorb::Subscribe;
+//! use px4::uorb::{Publish, Subscribe};
 //!
 //! #[px4_message("example/msg/debug_value.msg")]
 //! pub struct debug_value;
 //!
 //! #[px4_module_main]
 //! fn my_module(args: &[&str]) -> i32 {
+//!
+//!   let mut publ = debug_value::advertise();
+//!   publ.publish(&debug_value { timestamp: 0, value: 1.0, ind: 3 }).unwrap();
+//!
 //!   let sub = debug_value::subscribe().unwrap();
 //!   info!("Latest debug message: {:?}", sub.get().unwrap());
+//!
 //!   0
 //! }
 //! ```

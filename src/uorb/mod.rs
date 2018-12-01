@@ -37,16 +37,16 @@
 //! ```ignore
 //! use px4::uorb::Publish;
 //!
-//! let publ = foo { timestamp: 123, a: 1, b: 2 }.advertise().unwrap();
+//! let mut publ = foo::advertise();
 //!
-//! publ.publish(&foo { timestamp: 456, a: 3, b: 4 }).unwrap();
+//! publ.publish(&foo { timestamp: 123, a: 4, b: 5 }).unwrap();
 //! ```
 
 mod c;
 mod publish;
 mod subscribe;
 
-pub use self::c::Metadata;
+pub use self::c::{Metadata, priority};
 pub use self::publish::{Publisher, Publish};
 pub use self::subscribe::{Subscription, Subscribe};
 

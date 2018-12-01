@@ -2,10 +2,17 @@
 
 use std::ffi::CStr;
 
+pub mod priority {
+	pub const MIN: i32 = 1;
+	pub const VERY_LOW: i32 = 25;
+	pub const LOW: i32 = 50;
+	pub const DEFAULT: i32 = 75;
+	pub const HIGH: i32 = 100;
+	pub const VERY_HIGH: i32 = 125;
+	pub const MAX: i32 = 255;
+}
+
 extern "C" {
-	pub fn orb_advertise(meta: *const Metadata, data: *const u8) -> usize;
-	pub fn orb_advertise_queue(meta: *const Metadata, data: *const u8, queue_size: u32) -> usize;
-	pub fn orb_advertise_multi(meta: *const Metadata, data: *const u8, instance: *mut i32, priority: i32) -> usize;
 	pub fn orb_advertise_multi_queue(meta: *const Metadata, data: *const u8, instance: *mut i32, priority: i32, queue_size: u32) -> usize;
 	pub fn orb_unadvertise(handle: usize) -> i32;
 	pub fn orb_publish(meta: *const Metadata, handle: usize, data: *const u8) -> i32;
