@@ -1,22 +1,6 @@
-[package]
-name = "px4"
-version = "0.2.2"
-authors = ["Mara Bos <m-ou.se@m-ou.se>"]
-description = "Rust bindings for PX4"
-license = "BSD-2-Clause"
-repository = "https://github.com/dronesforwork/px4-rust"
-documentation = "https://docs.rs/px4/"
-keywords = ["px4"]
-
-[lib]
-name = "px4"
-path = "src/lib.rs"
-
-[[example]]
-name = "demo"
-crate-type = ["cdylib"]
-path = "example/main.rs"
-
-[dependencies]
-log = "0.4"
-px4_macros = { version = "0.2.1", path = "macros" }
+[workspace]
+members = [
+	"px4",
+	"px4_macros",
+	"example",
+]

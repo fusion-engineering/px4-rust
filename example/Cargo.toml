@@ -1,0 +1,11 @@
+[package]
+name = "px4_example"
+version = "0.0.0"
+
+[lib]
+crate-type = ["cdylib"]
+path = "src/module.rs"
+
+[dependencies]
+log = "0.4"
+px4 = { path = "../px4" }

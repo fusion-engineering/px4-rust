@@ -13,7 +13,7 @@
 //! ```text
 //! [lib]
 //! crate-type = ["cdylib"]
-//! path = "src/main.rs"
+//! path = "src/module.rs"
 //! ```
 //!
 //! This will turn your program into a loadable module instead of a standalone
