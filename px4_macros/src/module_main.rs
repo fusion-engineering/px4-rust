@@ -8,15 +8,11 @@ pub fn px4_module_main(args: TokenStream, input: TokenStream) -> TokenStream {
 	}
 	let fndef = parse_macro_input!(input as syn::ItemFn);
 	let name = &fndef.ident;
-	let main = match fndef.decl.output {
-		syn::ReturnType::Default => quote! { |a| { #name(a); 0 } },
-		_ => quote! { #name },
-	};
 	let expanded = quote! {
 		#fndef
 		#[no_mangle]
 		pub extern "C" fn px4_module_main(argc: u32, argv: *mut *mut u8) -> i32 {
-			px4::_run(concat!(module_path!(), "\0").as_bytes(), argc, argv, #main)
+			px4::_run(concat!(module_path!(), "\0").as_bytes(), argc, argv, #name)
 		}
 	};
 	expanded.into()
