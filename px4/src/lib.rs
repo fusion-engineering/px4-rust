@@ -5,6 +5,10 @@
 //! Logging and uORB. It also provides the entry point for your module, and
 //! handles panics on the main thread of the module.
 //!
+//! See the
+//! [`example` directory](https://github.com/dronesforwork/px4-rust/tree/master/example)
+//! for an example module.
+//!
 //! ## Compiling and running
 //!
 //! To build a PX4 module in Rust, create a crate as you would for any other
