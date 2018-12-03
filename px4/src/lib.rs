@@ -116,17 +116,17 @@ pub use crate::logging::{log_raw, LogLevel};
 pub use px4_macros::{px4_message, px4_module_main};
 
 #[doc(hidden)]
-pub fn _run<F, R>(modulename: &'static [u8], argc: u32, argv: *mut *mut u8, f: F) -> i32
+pub unsafe fn _run<F, R>(modulename: &'static [u8], argc: u32, argv: *mut *mut u8, f: F) -> i32
 where
 	F: Fn(&[&str]) -> R + std::panic::UnwindSafe,
 	R: MainStatusCode,
 {
-	unsafe { logging::init(modulename) };
+	logging::init(modulename);
 	std::panic::catch_unwind(move || {
 		let mut args = Vec::with_capacity(argc as usize);
 		for i in 0..argc {
 			args.push(
-				unsafe { CStr::from_ptr(*argv.offset(i as isize) as *const c_char) }
+				CStr::from_ptr(*argv.offset(i as isize) as *const c_char)
 					.to_str()
 					.unwrap_or_else(|_| panic!("Invalid UTF-8 in arguments.")),
 			);

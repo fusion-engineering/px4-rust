@@ -12,7 +12,7 @@ pub fn px4_module_main(args: TokenStream, input: TokenStream) -> TokenStream {
 		#fndef
 		#[no_mangle]
 		pub extern "C" fn px4_module_main(argc: u32, argv: *mut *mut u8) -> i32 {
-			px4::_run(concat!(module_path!(), "\0").as_bytes(), argc, argv, #name)
+			unsafe { px4::_run(concat!(module_path!(), "\0").as_bytes(), argc, argv, #name) }
 		}
 	};
 	expanded.into()
