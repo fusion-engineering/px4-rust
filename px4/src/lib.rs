@@ -100,7 +100,7 @@
 //! use px4::{px4_module_main, px4_message};
 //! use px4::uorb::{Publish, Subscribe};
 //!
-//! #[px4_message("example/msg/debug_value.msg")]
+//! #[px4_message("../example/msg/debug_value.msg")]
 //! pub struct debug_value;
 //!
 //! #[px4_module_main]
