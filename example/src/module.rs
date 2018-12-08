@@ -1,6 +1,3 @@
-extern crate log;
-extern crate px4;
-
 use log::{info, warn};
 use px4::{info_raw, px4_message, px4_module_main};
 

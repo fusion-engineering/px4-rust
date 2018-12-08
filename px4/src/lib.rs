@@ -44,8 +44,6 @@
 //! ### Example
 //!
 //! ```
-//! extern crate px4;
-//!
 //! use px4::px4_module_main;
 //!
 //! #[px4_module_main]
@@ -70,9 +68,6 @@
 //! ### Example
 //!
 //! ```
-//! extern crate log;
-//! extern crate px4;
-//!
 //! use log::{info, warn};
 //! use px4::px4_module_main;
 //!
@@ -93,9 +88,6 @@
 //! ### Example
 //!
 //! ```
-//! extern crate log;
-//! extern crate px4;
-//!
 //! use log::info;
 //! use px4::{px4_module_main, px4_message};
 //! use px4::uorb::{Publish, Subscribe};
@@ -113,9 +105,6 @@
 //!   info!("Latest debug message: {:?}", sub.get().unwrap());
 //! }
 //! ```
-
-extern crate log;
-extern crate px4_macros;
 
 use std::ffi::CStr;
 use std::os::raw::c_char;
