@@ -89,18 +89,18 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 		// Look up the type's width, Rust type, and C type.
 
 		let (width, mut rust, c) = match type_ {
-			"uint64" => (8, quote! { u64  }, "uint64_t"),
-			"uint32" => (4, quote! { u32  }, "uint32_t"),
-			"uint16" => (2, quote! { u16  }, "uint16_t"),
+			"uint64"         => (8, quote! { u64  }, "uint64_t"),
+			"uint32"         => (4, quote! { u32  }, "uint32_t"),
+			"uint16"         => (2, quote! { u16  }, "uint16_t"),
 			"uint8" | "byte" => (1, quote! { u8   }, "uint8_t"),
-			"int64" => (8, quote! { i64  }, "int64_t"),
-			"int32" => (4, quote! { i32  }, "int32_t"),
-			"int16" => (2, quote! { i16  }, "int16_t"),
-			"int8" => (1, quote! { i8   }, "int8_t"),
-			"float64" => (8, quote! { f64  }, "double"),
-			"float32" => (4, quote! { f32  }, "float"),
-			"char" => (1, quote! { i8   }, "char"),
-			"bool" => (1, quote! { bool }, "bool"),
+			"int64"          => (8, quote! { i64  }, "int64_t"),
+			"int32"          => (4, quote! { i32  }, "int32_t"),
+			"int16"          => (2, quote! { i16  }, "int16_t"),
+			"int8"           => (1, quote! { i8   }, "int8_t"),
+			"float64"        => (8, quote! { f64  }, "double"),
+			"float32"        => (4, quote! { f32  }, "float"),
+			"char"           => (1, quote! { u8   }, "char"),
+			"bool"           => (1, quote! { bool }, "bool"),
 			_ => {
 				panic!(
 					"Unknown type `{}` on line {} in {:?}",
@@ -110,8 +110,10 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 				);
 			}
 		};
+		let mut c = c.to_string();
 		if let Some(n) = array_len {
 			rust = quote! { [#rust; #n] };
+			c = format!("{}[{}]", c, n);
 		}
 
 		// Add it to the list.
