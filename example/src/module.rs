@@ -1,6 +1,5 @@
 use log::{info, warn};
 use px4::{info_raw, px4_message, px4_module_main};
-
 use px4::uorb::{Publish, Subscribe};
 
 #[px4_message("msg/debug_value.msg")]
