@@ -8,11 +8,15 @@ use std::path::Path;
 use syn::parse_macro_input;
 
 pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
+	let arg = parse_macro_input!(args as syn::LitStr).value();
+
 	// Open .msg file
 
-	let path = parse_macro_input!(args as syn::LitStr).value();
-	let root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or(".".into());
-	let path = Path::new(&root).join(&path);
+	let path = if let Some(root) = std::env::var_os("CARGO_MANIFEST_DIR") {
+		Path::new(&root).join(&arg)
+	} else {
+		arg.into()
+	};
 	let file = File::open(&path).unwrap_or_else(|e| {
 		panic!("Unable to open {:?}: {}", path, e);
 	});
@@ -30,7 +34,7 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 		_ => false,
 	};
 	if !is_unit_struct || input.generics.lt_token.is_some() {
-		panic!("Expected `;` after `struct {}`", name);
+		panic!("Expected `struct {};`", name);
 	}
 
 	// Read the .msg file line by line, collecting all the struct members.
@@ -156,7 +160,7 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 	let expanded = quote! {
 		#[repr(C)]
 		#[repr(align(8))]
-		#[derive(Clone,Debug)]
+		#[derive(Clone, Debug)]
 		#(#attrs)*
 		#vis struct #name {
 			#(#mems),*
