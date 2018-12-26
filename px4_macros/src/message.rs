@@ -125,18 +125,24 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 
 	members.sort_by(|a, b| b.1.cmp(&a.1));
 
-	// Compute the total size and add any padding.
+	// Compute the total size and generate the message fields description.
 
 	let mut fields = String::new();
 	let mut size = 0;
-	let mut pad_num = 0;
-	for m in &members {
-		add_padding(&mut fields, &mut pad_num, &mut size, m.1);
-		write!(&mut fields, "{} {};", m.3, m.0).unwrap();
-		size += m.4;
+	for (name, _, _, c_type, field_size) in &members {
+		write!(&mut fields, "{} {};", c_type, name).unwrap();
+		size += field_size;
 	}
 	let size_no_padding = size;
-	add_padding(&mut fields, &mut pad_num, &mut size, 8);
+	// Add padding if the size is not a multiple of 8 yet.
+	// (Note that since we sort the fields by their alignment, and each bigger
+	// alignment is a multiple of each smaller alignment; padding can not
+	// occur between fields, only at the end.)
+	if size % 8 != 0 {
+		let padding = 8 - size % 8;
+		write!(fields, "uint8_t[{}] _padding0;", padding).unwrap();
+		size += padding;
+	}
 	fields.push('\0');
 
 	if size > 0xFFFF {
@@ -145,17 +151,13 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 
 	// Generate the Rust code.
 
-	let size = size as u16;
-	let size_no_padding = size_no_padding as u16;
-	let path = path.to_str().unwrap();
 	let vis = input.vis;
 	let attrs = input.attrs;
-	let mems = members.iter().map(|m| {
-		let n = &m.0;
-		let t = &m.2;
-		quote! { #n: #t }
-	});
+	let mems = members.iter().map(|(name, _, ty, _, _)| quote! { #name: #ty });
+	let path = path.to_str().unwrap();
 	let name_str = format!("{}\0", name);
+	let size = size as u16;
+	let size_no_padding = size_no_padding as u16;
 
 	let expanded = quote! {
 		#[repr(C)]
@@ -180,14 +182,4 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 	};
 
 	expanded.into()
-}
-
-fn add_padding(fields: &mut String, pad_num: &mut usize, size: &mut usize, alignment: usize) {
-	let misalignment = *size % alignment;
-	if misalignment != 0 {
-		let pad = alignment - misalignment;
-		write!(fields, "uint8_t[{}] _padding{};", pad, *pad_num).unwrap();
-		*size += pad;
-		*pad_num += 1;
-	}
 }
