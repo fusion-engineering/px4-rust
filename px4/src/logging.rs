@@ -37,14 +37,18 @@ pub fn log_raw(level: LogLevel, message: &str) {
 /// # #[macro_use] extern crate px4;
 /// # #[no_mangle] fn px4_log_raw() {}
 /// # fn main() {
+/// info_raw!("Hello World!\n");
 /// info_raw!("Hello {}!\n", "World");
 /// # }
 /// ```
 #[macro_export]
 macro_rules! info_raw {
+	($arg:expr) => (
+		$crate::log_raw($crate::LogLevel::Info, $arg)
+	);
 	($($arg:tt)+) => (
 		$crate::log_raw($crate::LogLevel::Info, &format!($($arg)+))
-	)
+	);
 }
 
 struct Px4Logger;
