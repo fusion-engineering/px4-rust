@@ -1,21 +1,37 @@
 use log::{info, warn};
-use px4::{info_raw, px4_message, px4_module_main};
 use px4::uorb::{Publish, Subscribe};
+use px4::{info_raw, px4_message, px4_module_main};
+use structopt::StructOpt;
 
 #[px4_message("msg/debug_value.msg")]
 pub struct debug_value;
 
+#[derive(StructOpt)]
+#[structopt(raw(setting = "structopt::clap::AppSettings::DisableVersion"))]
+struct Options {
+	/// Who to say hello to.
+	#[structopt(long, default_value = "World")]
+	name: String,
+
+	/// Panic right away, before doing anything.
+	#[structopt(long)]
+	panic: bool,
+}
+
 #[px4_module_main]
-fn main(args: &[&str]) {
+fn main(args: &[&str]) -> Result<(), ()> {
+	let args = Options::from_iter_safe(args).map_err(|e| info_raw!("{}\n", e))?;
+
+	if args.panic {
+		panic!("Oh no, panic!");
+	}
 
 	// Logging:
 
-	info!("Hello World!");
+	warn!("Hello {}!", args.name);
 
-	info_raw!("\n |> \\/ /_|    |> | | /_ |_");
+	info_raw!("\n |) \\/ /_|    |) | | /_ |_");
 	info_raw!("\n |  /\\   |    |\\ |_|  / |_\n\n");
-
-	warn!("Arguments: {:?}", &args[1..]);
 
 	// Publishing:
 
@@ -47,4 +63,6 @@ fn main(args: &[&str]) {
 	let sub = debug_value::subscribe().unwrap();
 
 	info!("Subscribed and read: {:?}", sub.get());
+
+	Ok(())
 }
