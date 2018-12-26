@@ -15,7 +15,7 @@ path = "src/lib.rs"
 
 [dependencies]
 log = "0.4"
-px4_macros = { version = "0.2.4", path = "../px4_macros" }
+px4_macros = { version = "=0.2.4", path = "../px4_macros" }
 
 [badges]
 travis-ci = { repository = "dronesforwork/px4-rust" }
