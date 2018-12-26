@@ -69,22 +69,20 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 
 		// Parse array types.
 
-		let array_len = if let Some(b) = type_.find('[') {
+		let array_len = type_.find('[').map(|open_brace| {
 			if !type_.ends_with(']') {
 				panic!("Missing `]` on line {} in {:?}", line_num + 1, path);
 			}
-			let len = &type_[b + 1..type_.len() - 1];
-			type_ = &type_[..b];
-			Some(len.parse::<usize>().unwrap_or_else(|_| {
+			let braced_part = &type_[open_brace + 1..type_.len() - 1];
+			type_ = &type_[..open_brace];
+			braced_part.parse::<usize>().unwrap_or_else(|_| {
 				panic!(
 					"Invalid array length on line {} in {:?}",
 					line_num + 1,
 					path
 				);
-			}))
-		} else {
-			None
-		};
+			})
+		});
 
 		// Look up the type's width, Rust type, and C type.
 
