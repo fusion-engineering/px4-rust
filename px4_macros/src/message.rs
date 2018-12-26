@@ -171,10 +171,10 @@ pub fn px4_message(args: TokenStream, input: TokenStream) -> TokenStream {
 			fn metadata() -> &'static px4::uorb::Metadata {
 				let _ = include_bytes!(#path); // This causes the file to be recompiled if the .msg-file is changed.
 				static M: px4::uorb::Metadata = px4::uorb::Metadata::_unsafe_new(
-					#name_str.as_ptr(),
+					#name_str as *const str as *const u8,
 					#size,
 					#size_no_padding,
-					#fields.as_ptr(),
+					#fields as *const str as *const u8,
 				);
 				&M
 			}
