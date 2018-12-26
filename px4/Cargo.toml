@@ -1,6 +1,6 @@
 [package]
 name = "px4"
-version = "0.2.3"
+version = "0.2.4"
 authors = ["Mara Bos <m-ou.se@m-ou.se>"]
 description = "Rust bindings for PX4"
 license = "BSD-2-Clause"
@@ -15,7 +15,7 @@ path = "src/lib.rs"
 
 [dependencies]
 log = "0.4"
-px4_macros = { version = "0.2.1", path = "../px4_macros" }
+px4_macros = { version = "0.2.4", path = "../px4_macros" }
 
 [badges]
 travis-ci = { repository = "dronesforwork/px4-rust" }
