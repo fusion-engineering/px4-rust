@@ -3,7 +3,7 @@ use quote::quote;
 use syn::parse_macro_input;
 
 pub fn px4_module_main(args: TokenStream, input: TokenStream) -> TokenStream {
-	if args.to_string() != "" {
+	if !args.is_empty() {
 		panic!("px4_module_main does not take any arguments");
 	}
 	let fndef = parse_macro_input!(input as syn::ItemFn);
