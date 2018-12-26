@@ -62,9 +62,7 @@ impl log::Log for Px4Logger {
 		if !self.enabled(record.metadata()) {
 			return;
 		}
-		let target = record.target();
-		let s = format!("{}\0{}\0", target, record.args());
-		let (module, message) = s.split_at(target.len() + 1);
+
 		let level = match record.level() {
 			log::Level::Error => LogLevel::Error,
 			log::Level::Warn => LogLevel::Warn,
@@ -72,6 +70,13 @@ impl log::Log for Px4Logger {
 			log::Level::Debug => LogLevel::Debug,
 			log::Level::Trace => LogLevel::Debug,
 		};
+
+		// We allocate both nul-terminated strings as one single String, to
+		// save on heap allocations.
+		let target = record.target();
+		let s = format!("{}\0{}\0", target, record.args());
+		let (module, message) = s.as_bytes().split_at(target.len() + 1);
+
 		unsafe {
 			px4_log_modulename(
 				level as i32,
@@ -96,7 +101,7 @@ pub unsafe fn init(modulename: &'static [u8]) {
 			} else if let Some(s) = info.payload().downcast_ref::<String>() {
 				&s
 			} else {
-				"[panic message not available]"
+				"[unknown]"
 			};
 			let mut message = String::new();
 			let thread = std::thread::current();
