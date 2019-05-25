@@ -28,7 +28,7 @@ pub struct Publisher<T> {
 impl<T: Message> Publisher<T> {
 	/// Publish a message.
 	///
-	/// The first time this funciton is called, it will call advertise the message.
+	/// The first time this function is called, it will advertise the message.
 	pub fn publish(&mut self, value: &T) -> Result<(), i32> {
 		assert_eq!(std::mem::size_of::<T>(), T::metadata().size() as usize);
 		let value_ptr = value as *const T as *const u8;
