@@ -1,6 +1,6 @@
 use super::{c, Message};
 use std::marker::PhantomData;
-use std::mem::uninitialized;
+use std::mem::MaybeUninit;
 
 /// A subscription to a [`Message`](trait.Message.html) topic.
 ///
@@ -70,23 +70,27 @@ impl<T: Message> Subscription<T> {
 	/// Get a copy of the latest message.
 	pub fn get(&self) -> Result<T, i32> {
 		unsafe {
-			let mut val = uninitialized::<T>();
-			self.copy(&mut val).map(|_| val)
+			let mut val = MaybeUninit::<T>::uninit();
+			self.get_into_ptr(val.as_mut_ptr())
+				.map(|_| val.assume_init())
 		}
+	}
+
+	/// Copy the latest message into the given message object.
+	pub fn get_into(&self, val: &mut T) -> Result<(), i32> {
+		unsafe { self.get_into_ptr(val) }
 	}
 
 	/// Copy the latest message into the given message object.
 	///
 	/// It is safe for `*val` to be uninitialized when calling this function.
-	pub fn copy(&self, val: &mut T) -> Result<(), i32> {
+	pub unsafe fn get_into_ptr(&self, val: *mut T) -> Result<(), i32> {
 		assert_eq!(std::mem::size_of::<T>(), T::metadata().size() as usize);
-		unsafe {
-			let r = c::orb_copy(T::metadata(), self.handle, val as *mut T as *mut u8);
-			if r == 0 {
-				Ok(())
-			} else {
-				Err(r)
-			}
+		let r = c::orb_copy(T::metadata(), self.handle, val as *mut u8);
+		if r == 0 {
+			Ok(())
+		} else {
+			Err(r)
 		}
 	}
 
