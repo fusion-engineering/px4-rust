@@ -46,9 +46,9 @@ mod c;
 mod publish;
 mod subscribe;
 
-pub use self::c::{Metadata, priority};
-pub use self::publish::{Publisher, Publish};
-pub use self::subscribe::{Subscription, Subscribe};
+pub use self::c::{priority, Metadata};
+pub use self::publish::{Publish, Publisher};
+pub use self::subscribe::{Subscribe, Subscription};
 
 /// A message which can be published and/or subscribed to.
 ///

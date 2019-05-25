@@ -109,8 +109,8 @@
 use std::ffi::CStr;
 use std::os::raw::c_char;
 
-pub mod uorb;
 mod logging;
+pub mod uorb;
 
 pub use crate::logging::{log_raw, LogLevel};
 pub use px4_macros::{px4_message, px4_module_main};

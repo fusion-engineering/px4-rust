@@ -1,4 +1,4 @@
-use super::{Message, c};
+use super::{c, Message};
 use std::marker::PhantomData;
 use std::mem::uninitialized;
 
@@ -67,7 +67,6 @@ impl<T> Drop for Subscription<T> {
 }
 
 impl<T: Message> Subscription<T> {
-
 	/// Get a copy of the latest message.
 	pub fn get(&self) -> Result<T, i32> {
 		unsafe {
